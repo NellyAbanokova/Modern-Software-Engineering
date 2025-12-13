@@ -1,0 +1,35 @@
+services:
+  jupyter:
+    build:
+      context: ./jupyter
+    ports:
+      - "9191:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+
+  db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: Nelly
+      POSTGRES_PASSWORD: Abanokova
+      POSTGRES_DB: nellchuuu
+
+  mlapi:
+    build:
+      context: ./mlapi
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_NAME: mytelegramnick
+      DB_USER: myname
+      DB_PASSWORD: mysurname
+
+volumes:
+  pgdata:
